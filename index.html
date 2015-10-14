@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PRUEBA</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="default.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="jquery/jquery.form.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+	
+	<script>
+	$(document).ready(function() {
+	
+		numForm = 0;
+		 /* attach a submit handler to the form */
+            $("#registro").submit(function(event) {
+
+                /* stop form from submitting normally */
+                event.preventDefault();
+
+                /* get some values from elements on the page: */
+                var $form = $(this),
+                    term = $form.find('input[name="email"]').val(),
+                    url = $form.attr('action');
+
+                /* Send the data using post */
+                var posting = $.post(url, {
+                    email: term
+                });
+
+                /* Put the results in a div */
+                posting.done(function(data) {
+					//alert(data);
+                    if(data == "success"){
+						$("#reg").hide();
+						actualizarFormulario(numForm);
+						$("#formularios").show();
+						//$("#result").empty().append(content);
+					}else{
+						//MOSTRAR ERROR 
+					}
+                    
+                });
+            });
+            
+			function actualizarFormulario(num){
+					$.ajax({
+					  url: 'php/formulario.php',
+					  type: 'GET',
+					  data: 'numForm='+num,
+					  success: function(data) {
+						//called when successful
+						alert(data);
+						var obj = jQuery.parseJSON( data );
+						
+						$('#contexto').html(obj.contexto);
+						$('#situacion').html(obj.situacion);
+						
+
+						$('#casoUnoPregunta').html(obj[0].pregunta);
+						$('#casoUnoOpcionUno').html(obj[0].opcion1);
+						$('#casoUnoOpcionDos').html(obj[0].opcion2);
+						
+						$('#casoDosPregunta').html(obj[1].pregunta);
+						$('#casoDosOpcionUno').html(obj[1].opcion1);
+						$('#casoDosOpcionDos').html(obj[1].opcion2);
+						
+						//mapa
+					  },
+					  error: function(e) {
+						//called when there is an error
+						//console.log(e.message);
+					  }
+					});
+					numForm++;
+				}
+				
+				//$('input[name=radioName]:checked').val()
+				opcionCasoUno = '';
+				$('input[type=radio][name=opcionesCasoUno]').change(function() {
+						opcionCasoUno = '';
+					});
+				
+				$("#siguiente").click(function(event) {
+						
+						actualizarFormulario(numForm);
+					});
+
+        });
+	</script>
+</head>
+<body>
+	<div>
+	
+	
+	<div class="container" id="reg">
+		<div class="panel panel-featured-top panel-featured-primary ">
+			 <div class="panel-heading">
+                <h3 class="panel-title">INGRESE AQUÍ</h3>
+            </div>
+            <div class="panel-body">
+
+             
+			<form role="form" id="registro" action="php/registro.php" method="post">
+			texto barato
+			<br>
+			  <div class="form-group">
+				<label for="ejemplo_email_1">Email</label>
+				<input type="email" class="form-control" name="email" id="email"
+					   placeholder="Introduce tu email">
+			  </div>
+			  <br>
+			  <button type="submit" class="btn btn-default">Enviar</button>
+			</form>
+			
+            </div>
+		</div>
+	</div>	
+		
+    <div class="container" id="formularios" style="display:none;">
+
+        <!-- Static navbar -->
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">ESTUDIO DE PROBABILIDAD</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">galleta@galleta.com</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="./">Aquí puede ir la hora <span class="sr-only">(current)</span></a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div><!--/.container-fluid -->
+        </nav>
+
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"><span>60% Complete</span></div>
+        </div>
+
+        <div class="panel panel-featured-top panel-featured-primary">
+            <div class="panel-body">
+                <div class="widget-summary">
+                    <div class="widget-summary-col widget-summary-col-icon">
+                        <div class="summary-icon bg-primary">
+                            <i class="fa fa-life-ring"></i>
+                        </div>
+                    </div>
+                    <div class="widget-summary-col">
+                        <div class="summary">
+                            <h4>Contexto</h4>
+                            <div class="info" id="contexto">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel panel-primary">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">SITUACIÓN</h3>
+            </div>
+            <div class="panel-body" id="situacion">
+
+
+            </div>
+        </div>
+
+
+
+        <div class="panel panel-success">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">CASO 1</h3>
+            </div>
+            <div class="panel-body" >
+
+			<div id="casoUnoPregunta">
+			</div>
+			
+					<div class="radio">
+						<label >
+							<input type="radio" name="opcionesCasoUno"  value="opcion_1" >
+							<div id="casoUnoOpcionUno"></div>
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="opcionesCasoUno"  value="opcion_2">
+							<div id="casoUnoOpcionDos"></div>
+						</label>
+					</div>
+				
+
+                <p>
+                    A continuación se ofrece un modelo de mapa conceptual -del caso 1- para que encierre en un óvalo la(s)
+                    opción(es) de orden según su criterio -mayor que, menor que, o igual que-.
+                </p>
+
+                <img src="prueba.png" class="center-block img-responsive" alt="Mapa Conceptual">
+            </div>
+        </div>
+
+        <div class="panel panel-success">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">CASO 2</h3>
+            </div>
+            <div class="panel-body">
+
+               <div id="casoDosPregunta">
+			</div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="opciones" id="opciones_1" value="opcion_1">
+                        <div id="casoDosOpcionUno"></div>
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="opciones" id="opciones_2" value="opcion_2">
+                       <div id="casoDosOpcionDos"></div>
+                    </label>
+                </div>
+
+                <p>
+                    A continuación se ofrece un modelo de mapa conceptual -del caso 2- para que encierre en un óvalo la(s)
+                    opción(es) de orden según su criterio -mayor que, menor que, o igual que-.
+                    Si C significa el evento asistir a Clase la tilde en la letra, C’ representa el evento de no asistir a la Clase;
+                    análogo, si T es el evento de hacer bien la Tarea puede representar con T’ al evento contrario.
+                </p>
+
+                <img src="prueba.png" class="center-block img-responsive" alt="Mapa Conceptual">
+            </div>
+        </div>
+		<button class="btn btn-primary" name="siguiente" id="siguiente" >SIGUIENTE</button>
+    </div> <!-- /container -->
+</body>
+</html>
